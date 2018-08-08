@@ -21,9 +21,11 @@ if($result){ //did the query work?
 		}		
 	} else {
 		//the query worked, but there was no data
+		$output['error'] = 'no data';
 	}
 } else {
 	//the query didn't work
+	$output['error'] = 'query failed';
 }
 
 $json_output = json_encode($output);
