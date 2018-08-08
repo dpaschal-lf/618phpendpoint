@@ -2,7 +2,22 @@
 
 require_once('mysql_connect.php');
 
-$query = "SELECT * FROM `users`";
+// if(!empty($_GET['user_id'])){ //does user_id in the GET superglobal exist?
+// 	$query = "SELECT * FROM `users` WHERE ID={$_GET['user_id']}";
+// } else {
+// 	$query = "SELECT ID, name, email, status FROM `users`";
+// }
+
+if(!empty($_GET['user_id'])){ //does user_id in the GET superglobal exist?
+	$fields = ['*'];
+	$whereClause = " WHERE ID={$_GET['user_id']}";
+} else {
+	$fields = ['ID', 'name', 'email', 'status'];
+	$whereClause = '';
+}
+$fields = implode($fields,',');
+
+$query = "SELECT $fields FROM `users` $whereClause";
 
 $result = mysqli_query($conn, $query);
 
