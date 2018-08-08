@@ -9,6 +9,25 @@ body{
 #dataOutput{
 	border: 1px solid black;
 }
+.row{
+	border-bottom: 1px solid black;
+	clear: both;
+}
+.row > * {
+	border-right: 1px solid black;
+	box-sizing: border-box;
+	float: left;
+}
+.row .name{
+	width: 30%;
+}
+.row .email{
+	width: 50%;
+}
+.row .status{
+	width: 20%;
+}
+
 	</style>
 	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
 	<script type="text/javascript" >
@@ -27,7 +46,15 @@ function getDataFromServer(){
 		},
 		dataType: 'json',
 		success: function(response){
-			console.log('got data', response);
+			if(response.success){
+
+				$("#dataOutput").empty().append(
+					response.data.map( student => renderStudentOnDom(student))
+				)				
+			} else {
+				$("#dataOutput").text('no data available')
+			}
+
 		},
 		error: function(){
 			console.log('things went wrong')
@@ -36,6 +63,25 @@ function getDataFromServer(){
 	$.ajax( options );
 }
 
+function renderStudentOnDom(student){
+	var container = $("<div>",{
+		'class': 'row'
+	});
+	var name = $("<div>", {
+		'class': 'name',
+		text: student.name
+	})
+	var email = $("<div>", {
+		'class': 'email',
+		text: student.email
+	})
+	var status = $("<div>", {
+		'class': 'status',
+		text: student.status
+	})
+	container.append(name, email, status);
+	return container;
+}
 
 	</script>
 </head>
